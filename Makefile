@@ -17,14 +17,10 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
 RM = rm -rf
 
-A := $(shell brew --prefix readline)/include
-B := $(brew --prefix readline)/include
-
 all: $(OBJ_DIR) $(NAME)
 
-test:
-	@echo A is $(A)
-	@echo B is $(B)
+test: all
+	./test.sh
 
 $(OBJ_DIR):
 	mkdir -p $@

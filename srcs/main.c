@@ -69,6 +69,7 @@ int main(int ac, char **av, char **env)
 	if (ac != 1)
 		return (0);
 	set_sigaction();
+	rl_outstream = stderr;
 	printf("%s\n", av[0]);
 	while (1)
 	{
