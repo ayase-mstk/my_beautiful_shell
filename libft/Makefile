@@ -6,12 +6,13 @@
 #    By: mahayase <mahayase@student.42.jp>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/11 18:32:45 by mahayase          #+#    #+#              #
-#    Updated: 2023/05/30 19:28:26 by mahayase         ###   ########.fr        #
+#    Updated: 2023/06/04 16:38:43 by mahayase         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libft.a
 
+SRCS_DIR = srcs/
 SRCS = 	ft_atoi.c \
 		ft_atol.c \
 		ft_bzero.c \
@@ -53,7 +54,8 @@ SRCS = 	ft_atoi.c \
 		get_next_line.c \
 		get_next_line_utils.c
 
-OBJS = $(SRCS:%.c=%.o)
+OBJ_DIR = ./obj/
+OBJS = $(addprefix $(OBJ_DIR), $(SRCS:.c=.o))
 
 CC = cc
 
@@ -61,16 +63,24 @@ CFLAGS = -Wall -Wextra -Werror
 
 AR = ar crs
 
-all:	$(NAME)
+RM = rm -rf
+
+all: $(OBJ_DIR) $(NAME)
 
 $(NAME):	$(OBJS)
 	$(AR) $(NAME) $(OBJS)
 
+$(OBJ_DIR):
+	mkdir -p obj
+
+$(OBJ_DIR)%.o: $(SRCS_DIR)%.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+
 clean:
-	rm -f $(OBJS)
+	$(RM) $(OBJ_DIR)
 
 fclean: clean
-	rm -f $(NAME)
+	$(RM) $(NAME)
 
 re: fclean all
 

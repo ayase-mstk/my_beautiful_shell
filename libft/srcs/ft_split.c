@@ -6,7 +6,7 @@
 /*   By: mahayase <mahayase@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 14:34:15 by mahayase          #+#    #+#             */
-/*   Updated: 2023/05/30 19:31:47 by mahayase         ###   ########.fr       */
+/*   Updated: 2023/06/04 15:56:12 by mahayase         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,17 +90,43 @@ char	**ft_split(char const *s, char c)
 	return (strarr);
 }
 
-// static size_t	ft_strcount(char const *str, char c)
+// ver. deliminator is string
+// static size_t	ft_checkdelim(char c, char *delim)
 // {
 // 	size_t	i;
 
 // 	i = 0;
-// 	while (str[i] != c && str[i] != '\0')
+// 	while (delim[i] != '\0')
+// 	{
+// 		if (c == delim[i])
+// 			return (1);
 // 		i++;
+// 	}
+// 	return (0);
+// }
+
+// static size_t	ft_strcount(char const *str, char *delim)
+// {
+// 	size_t	i;
+// 	size_t	j;
+
+// 	i = 0;
+// 	j = 0;
+// 	while (str[i] != '\0')
+// 	{
+// 		j = 0;
+// 		while (delim[j] != '\0')
+// 		{
+// 			if (str[i] == delim[j])
+// 				return (i);
+// 			j++;
+// 		}
+// 		i++;
+// 	}
 // 	return (i);
 // }
 
-// static size_t	ft_cntsize(char	const *str, char c)
+// static size_t	ft_cntsize(char	const *str, char *delim)
 // {
 // 	size_t	i;
 // 	size_t	start;
@@ -114,7 +140,7 @@ char	**ft_split(char const *s, char c)
 // 	while (str[i] != '\0' && i < ft_strlen(str))
 // 	{
 // 		start = i;
-// 		end = start + ft_strcount(&str[i], c);
+// 		end = start + ft_strcount(&str[i], delim);
 // 		if (end > start)
 // 			cnt++;
 // 		i = end + 1;
@@ -122,25 +148,7 @@ char	**ft_split(char const *s, char c)
 // 	return (cnt);
 // }
 
-// static char	*ft_strndup(char const *src, size_t size)
-// {
-// 	char	*p;
-// 	size_t	i;
-
-// 	i = 0;
-// 	p = (char *)malloc(sizeof(char) * (size + 1));
-// 	if (p == NULL)
-// 		return (NULL);
-// 	while (i < size)
-// 	{
-// 		p[i] = src[i];
-// 		i++;
-// 	}
-// 	p[i] = '\0';
-// 	return (p);
-// }
-
-// static char	**ft_free(char **strarr, char const *s)
+// static char	**ft_freeall(char **strarr, char const *s)
 // {
 // 	size_t	i;
 
@@ -157,38 +165,46 @@ char	**ft_split(char const *s, char c)
 // 	return (NULL);
 // }
 
-// char	**ft_split(char const *s, char c)
+// char	**ft_split(char const *s, char *delim)
 // {
+// 	char	**strarr;
 // 	size_t	i;
 // 	size_t	j;
-// 	size_t	start;
-// 	size_t	end;
-// 	char	**strarr;
+// 	size_t	k;
 
 // 	i = 0;
 // 	j = 0;
-// 	strarr = (char **)malloc(sizeof(char *) * (ft_cntsize(s, c) + 1));
-// 	if (!s || strarr == NULL)
-// 		return (ft_free(strarr, s));
-// 	while (j < ft_cntsize(s, c) && s[i] != '\0')
+// 	k = 0;
+// 	strarr = (char **)malloc(sizeof(char *) * (ft_cntsize(s, delim) + 1));
+// 	if (strarr == NULL)
+// 		return (NULL);
+// 	while (s[i] != '\0' && i < ft_strlen(s))
 // 	{
-// 		start = i;
-// 		end = start + ft_strcount(&s[i], c);
-// 		if (end > start)
-// 		{
-// 			strarr[j++] = ft_strndup(&s[start], end - start);
-// 			if (strarr[j - 1] == NULL)
-// 				return (ft_free(strarr, s));
-// 		}
-// 		i = end + 1;
+// 		while (ft_checkdelim(s[i], delim))
+// 			i++;
+// 		j = i;
+// 		while (!ft_checkdelim(s[i], delim) && s[i] != '\0')
+// 			i++;
+// 		if (i > j)
+// 			strarr[k++] = ft_strndup(&s[j], i - j);
+// 		if (strarr[k - 1] == NULL)
+// 			return (ft_freeall(strarr, s));
 // 	}
-// 	strarr[j] = NULL;
+// 	strarr[k] = NULL;
 // 	return (strarr);
 // }
 
-// int main(void)
+// #include <stdio.h>
+// int	main(void)
 // {
-// 	char	*s = "      split       this for   me  !       ";
+// 	char str[] = "ls -l|wc -c";
+// 	char delim[] = " |";
 
-// 	printf("%p\n", ft_split(s, ' '));
+// 	char **strarr = ft_split(str, delim);
+// 	while (*strarr)
+// 	{
+// 		printf("%s\n", *strarr);
+// 		strarr++;
+// 	}
+// 	return (0);
 // }
