@@ -31,10 +31,14 @@ void	set_sigaction(void)
 void	get_command(char *line, char **env)
 {
 	char	*exactpath;
+	int		ret;
 
 	exactpath = get_filepath(line, env);
-	execve(exactpath, ft_split(line, ' '), env);
-	exit(0);
+	ret = execve(exactpath, ft_split(line, ' '), env);
+	if (ret == -1)
+	{
+		ft_error(strerror(errno), 2, 1);
+	}
 }
 
 void	child(char *line, char **env)
@@ -51,7 +55,7 @@ void	child(char *line, char **env)
 		if (!WIFEXITED(status))
 		{
 			free(line);
-			ft_error("child process error\n", 2);
+			ft_error("child process error\n", 2, 0);
 		}
 	}
 	else

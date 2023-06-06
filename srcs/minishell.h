@@ -16,6 +16,6 @@
 # define PATH "PATH="
 
 char	*get_filepath(char *cmd, char **env);
-int		ft_error(char *str, int fd);
+int		ft_error(char *str, int fd, int exit_flag);
 
 #endif

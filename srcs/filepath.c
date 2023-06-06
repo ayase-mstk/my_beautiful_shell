@@ -83,7 +83,7 @@ char *get_exactpath(char **split_pathes, char *cmd)
 		}
 	}
 	free_all(split_pathes);
-	ft_error("Error: command not found\n", 1);
+	ft_error("Error: command not found\n", 1, 127);
 	return (NULL);
 }
 
@@ -94,10 +94,10 @@ char	*get_filepath(char *cmd, char **env)
 	char	*path;
 
 	if ((all_path = get_filepathes(env)) == NULL)
-		ft_error("Error: PATH not found\n", 1);
+		ft_error("Error: PATH not found\n", 1, 0);
 	split_pathes = ft_split(all_path, ':');
 	if (split_pathes == NULL)
-		ft_error(strerror(errno), 2);
+		ft_error(strerror(errno), 2, 0);
 	path = get_exactpath(split_pathes, cmd);
 	return (path);
 }

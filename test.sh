@@ -6,14 +6,14 @@ cleanup() {
 
 assert() {
   # テストしようとしている内容をprint
-	printf '%-30s:' "\"$1\""
+	printf '%-30s:' "\"$1\" \"$2\"\"$3\" \"$4\""
 
 	# bashの出力をcmpに保存
-	echo -n -e "$1" | bash >cmp 2>&-
+	echo -n -e "$1" "$2" | bash >cmp 2>&-
 	# bashのexit statusをexpectedに代入
 	expected=$?
 	# minishellの出力をoutに保存
-	echo -n -e "$1" | ./minishell >out 2>&-
+	echo -n -e "$1" "$2" | ./minishell >out 2>&-
 	# minishellのexit statusをactualに代入
 	actual=$?
 
@@ -30,7 +30,10 @@ assert() {
 }
 
 # Empty line (EOF)
-assert 'ls' 'srcs/main.c'
+assert 'ls -l' '|' 'wc -l'
+assert 'ls -l' 'srcs/main.c'
+assert 'echo' 'mahayase'
+assert 'echo -n' 'mahayase'
 
 cleanup
 echo 'all OK'
